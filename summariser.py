@@ -54,5 +54,5 @@ def ollama_summarize(text, max_words=100, model="llama3.2"):
     r.raise_for_status()
     return r.json()["response"].strip()
 
-sarcasm_context = ""
-print(ollama_summarize("Oh, this café is absolutely incredible! I just love paying triple for the premium cup of coffee here — it really makes me feel fancy."))
+sarcasm_context = "(sarcasm detected)"
+print(ollama_summarize("Location Cafe, Go there no need to que Don't bother just shout the order to him even you are behind the que."))
