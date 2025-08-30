@@ -2,7 +2,7 @@ import spacy
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load model with vectors
-nlp = spacy.load("en_core_web_md")
+nlp = spacy.load("en_core_web_lg")
 
 '''
 text = """
@@ -16,22 +16,24 @@ Additional feedback: During our trip in January 2025, we visited Universal Studi
 """
 '''
 
-text = "I spent the whole day working from home and later went for a long run by the river. The park was crowded with families enjoying the weather, and there were cyclists speeding past on the trail. Afterwards, I went shopping for some groceries at the supermarket before heading back home to watch a movie. It was a relaxing day, but I didn’t feel like cooking so I just had some snacks while watching TV."
+text = "My office had a small celebration today with pizza, pasta, and drinks catered in. Everyone enjoyed chatting over the food before we went back to our desks. After work, I stopped at the supermarket to buy some groceries for the week. Later at home, I relaxed with some popcorn while watching a series."
 doc = nlp(text)
 
 # Define a given word
-word = "restuarant"
+word = "Restaurant"
 word_vec = nlp(word).vector.reshape(1, -1)
 
 top_5_relevant_words = []
 score = 0
 ignore_labels = ["DATE", "TIME", "CARDINAL", "ORDINAL", "MONEY", "PERCENT", "QUANTITY"]
+seen_texts = set()  #to avoid duplicates
 
 # Compute cosine similarity, skipping DATE entities
 for ent in doc.ents:
-    if ent.label_ in ignore_labels:   # skip dates
+    if ent.label_ in ignore_labels or ent.text in seen_texts:   # skip dates and duplicates
         continue
     sim = cosine_similarity(word_vec, ent.vector.reshape(1, -1))[0][0]
+    seen_texts.add(ent.text)
     if(len(top_5_relevant_words) == 5):
         # Find the sublist with the lowest number
         lowest = min(top_5_relevant_words, key=lambda x: x[1])
@@ -46,7 +48,10 @@ for ent in doc.ents:
 # Check if there are not enough entities
 if(len(top_5_relevant_words) < 5):
     for chunk in doc.noun_chunks:
+        if chunk.text in seen_texts:
+            continue
         sim = cosine_similarity(word_vec, chunk.vector.reshape(1, -1))[0][0]
+        seen_texts.add(chunk.text)
         if(len(top_5_relevant_words) == 5):
             # Find the sublist with the lowest number
             lowest = min(top_5_relevant_words, key=lambda x: x[1])
