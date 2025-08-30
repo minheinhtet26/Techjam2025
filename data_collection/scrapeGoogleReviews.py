@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import math
 
-API_KEY = "AIzaSyCXo8UO_liN86bIr76YricTFFy57b-OM2Q"
+API_KEY = ""
 URL = "https://places.googleapis.com/v1/places:searchNearby"
 HEADERS = {
     "Content-Type": "application/json",
