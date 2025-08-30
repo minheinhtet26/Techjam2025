@@ -11,7 +11,7 @@ For a fair comparison, Llama 3.2 was used for both the summarizer and the few-sh
 
 1. Install dependencies with Conda:
 
-conda env create -f environment.yml
+conda env create -f tech_jam_environment.yml
 
 2. Install Ollama:
 Download from: https://ollama.com/download
