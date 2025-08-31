@@ -34,7 +34,7 @@ Paste it into the Apify Google Maps Review Scraper: https://console.apify.com/ac
 
 ## Reproducing Results
 ## Ensemble Model
-
+1. Run through each cell in the Ensemble_Model.ipynb jupyter notebook
 
 ## Few-Shot Classification Model (Comparison)
 
